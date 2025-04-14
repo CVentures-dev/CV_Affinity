@@ -6,6 +6,6 @@ services:
     container_name: affinity-automation
     command: bash run.sh
     environment:
-  AFFINITY_API_KEY2: ${AFFINITY_API_KEY2}
-  AFFINITY_API_KEY: ${AFFINITY_API_KEY}
-  AIRTABLE_API_KEY: ${AIRTABLE_API_KEY}
+      AFFINITY_API_KEY2: ${AFFINITY_API_KEY2}
+      AFFINITY_API_KEY: ${AFFINITY_API_KEY}
+      AIRTABLE_API_KEY: ${AIRTABLE_API_KEY}
