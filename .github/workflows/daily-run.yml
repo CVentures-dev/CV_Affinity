@@ -21,5 +21,4 @@ jobs:
           AFFINITY_API_KEY2: ${{ secrets.AFFINITY_API_KEY2 }}
           AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
-        run: |
-          docker-compose up --build
+        run: docker compose up --build
