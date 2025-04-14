@@ -9,7 +9,6 @@ from components.helper import extract_domain, print_green, print_red, replace_sp
 from components.airtable_pull import airtable_pull
 
 import sys
-import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
 
