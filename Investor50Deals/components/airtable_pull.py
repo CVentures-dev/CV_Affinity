@@ -6,7 +6,7 @@ import pandas as pd
 from dotenv import load_dotenv
 load_dotenv()  
 
-
+# Load the Airtable API key from environment variables
 
 AIRTABLE_API_KEY = Api(os.getenv('AIRTABLE_API_KEY')) 
 
