@@ -64,6 +64,10 @@ for index, row in df.iterrows():
     url = f"https://api.affinity.co/organizations?term={name_url}+{domain_url}"
 
     response = requests.get(url, auth=("", AFFINITY_API_KEY))
+
+    print("Status code:", response.status_code)
+    print("Response text:", response.text)
+
     organizations = response.json().get('organizations', [])
     print(organizations)
 

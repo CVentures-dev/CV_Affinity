@@ -55,6 +55,3 @@ def is_valid_industry(industrySector):
             return False  # If at least one matches, return False
 
     return True  # If no match, return True
-
-
-print(is_valid_industry("Food & Agriculture"))  # True
