@@ -18,14 +18,21 @@ def airtable_pull(base_id, table_id):
     data = table.all(formula=myFormula)
 
     if not data:
-        raise ValueError("No data was pulled from Airtable")
+        # Empty result -> return empty DataFrame
+        print("No new Airtable rows in the last 24 hours.")
+        return pd.DataFrame()
 
    # Convert data into DataFrame
     df = pd.DataFrame([entry['fields'] for entry in data])
 
 
-    if not df.empty:
-        df.columns = df.columns.astype(str).str.strip()
+    if df.empty:
+        # Safety (shouldn't happen if data truthy, but just in case)
+        print("No new Airtable rows after field extraction.")
+        return df
+    
+    # Normalize col names
+    df.columns = df.columns.astype(str).str.strip()
 
 
     # Convert 'created' column to datetime format
@@ -40,8 +47,3 @@ def airtable_pull(base_id, table_id):
     print(f"{df.shape[0]} unique companies were submitted in the last 24 hours")
 
     return df
-
-
-# Example usage
-df = airtable_pull('appB2XATaLCyRuzrM', 'tbl9f0RegFtwXsGgq')
-print(df)
