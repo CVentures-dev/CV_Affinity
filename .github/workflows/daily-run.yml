@@ -5,6 +5,10 @@ on:
     - cron: "0 6 * * *" # every day at 6 AM UTC
   workflow_dispatch: # optional: allows manual triggering
 
+concurrency:
+  group: dealflow-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run-scripts:
     timeout-minutes: 30
@@ -22,4 +26,8 @@ jobs:
           AFFINITY_API_KEY2: ${{ secrets.AFFINITY_API_KEY2 }}
           AFFINITY_API_KEY: ${{ secrets.AFFINITY_API_KEY }}
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
-        run: docker compose up --build
+        run: |
+          set -euo pipefail
+          docker compose up --build --exit-code-from app --abort-on-container-exit
+          docker compose down -v
+          
