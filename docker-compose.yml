@@ -3,7 +3,6 @@ version: '3.9'
 services:
   app:
     build: .
-    container_name: affinity-automation
     command: bash run.sh
     environment:
       AFFINITY_API_KEY2: ${AFFINITY_API_KEY2}
