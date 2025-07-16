@@ -1,9 +1,15 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-# Load environment variables
-export $(cat .env | xargs)
+# Only load .env if present AND we're not already in CI
+# (GitHub Actions sets GITHUB_ACTIONS=true)
+if [[ -f .env && -z "${GITHUB_ACTIONS:-}" ]]; then
+  # Load without overriding existing vars
+  # shellcheck disable=SC2046
+  set -a
+  source .env
+  set +a
+fi
 
-# Run your scripts
-python ContrarianDeals/ContrarianDeals.py
-python Investor50Deals/Investor50Deals.py
+python -u ContrarianDeals/ContrarianDeals.py
+python -u Investor50Deals/Investor50Deals.py
