@@ -4,15 +4,15 @@ import pycountry
 
 def define_status(companyHQ, companyStage, industrySector):
     if not is_compatible_geo(companyHQ):
-        return 19005630, "Out of Scope"
+        return 15214638, "Out of Scope"
     
     if not is_early_stage(companyStage):  
-        return 19005630, "Out of Scope"
+        return 15214638, "Out of Scope"
     
     if not is_valid_industry(industrySector):
-        return 19005630, "Out of Scope"
+        return 15214638, "Out of Scope"
     
-    return 19046141, None
+    return 20860360, None
 
 
 

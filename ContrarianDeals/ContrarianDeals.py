@@ -78,9 +78,11 @@ for index, row in df.iterrows():
     domain = extract_domain(row['Company website'])
     industrySector = row["Industry sector"]
     companyStage = row["Company stage"]
-    company_stage = "Series B and later" if company_stage == "Series B and Later" else company_stage
+    companyStage = "Series B and later" if companyStage == "Series B and Later" else companyStage
     companyHQ = row["Company HQ"]
-    pitchdeck = row['Pitch Deck']
+    pitchdeck = row.get('Pitch Deck', None)
+    if pd.isna(pitchdeck):   # empty -> None
+        pitchdeck = None
 
 
 
