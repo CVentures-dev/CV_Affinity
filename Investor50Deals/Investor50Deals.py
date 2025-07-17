@@ -58,7 +58,8 @@ def main():
         industrySector = row["Industry sector"]
         companyStage = row["Company stage"]
         companyHQ = row["Company's HQ (backup)"]
-        eurRaising = row["EUR raising"]
+        val = pd.to_numeric(row["EUR raising"], errors="coerce")
+        eurRaising = val / 1000.0
         pitchdeck = row['Pitchdeck'][0]['url'] if isinstance(row['Pitchdeck'], list) and row['Pitchdeck'] else None
     
     
@@ -74,7 +75,6 @@ def main():
             print_green(f"The company {company_name} already exists.")
     
     
-            LIST_ID = "291726"
             #### CHECK IF THE ORG ALREADY EXISTS IN THE NEEDED LIST bn
             is_in_list = check_if_in_list(org_id)
             if is_in_list == True:

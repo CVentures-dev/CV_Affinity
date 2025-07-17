@@ -16,6 +16,7 @@ load_dotenv()  # This will load the variables from your .env file
 
 
 AFFINITY_API_KEY = os.getenv('AFFINITY_API_KEY')
+LIST_ID = 153042 # Deals list ID
 
 
 
@@ -48,14 +49,11 @@ def check_if_in_list(org_id):
             url = f"https://api.affinity.co/organizations/{org_id}"
             response = requests.get(url, auth=("", AFFINITY_API_KEY))
 
-
-
-
             lists = response.json().get('list_entries', [])
             list_ids = [item['list_id'] for item in lists]
             
-            # Check if that org is already in the list of Deals (id of Deals table = 291726)
-            if 291726 in list_ids:
+            # Check if that org is already in the list of Deals (id of Deals list = 153042)
+            if LIST_ID in list_ids:
                 return True
             else:
                 return False
@@ -95,7 +93,6 @@ def create_person(name, email, org_id):
 
 def add_to_list(name,organisation_id):
     # Add ORG to list
-    LIST_ID = "291726"
     URL = f"https://api.affinity.co/lists/{LIST_ID}/list-entries"
 
     data = {
@@ -122,7 +119,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
 
     # Lead Origination --------------------------------------
-    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5033172", row_id=list_entry_id, value="Climate50")
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4702464", row_id=list_entry_id, value="C50")
     if response_code == 200:
         print(f"SUCCESS: Added Lead Origination")
     else:
@@ -132,7 +129,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
 
     # Geo ----------------------------------------------------
-    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5033169", row_id=list_entry_id, value=companyHQ)
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="3523812", row_id=list_entry_id, value=companyHQ)
     if response_code == 200:
         print(f"SUCCESS: Added Geo")
     else:
@@ -141,7 +138,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
 
     # Amount Raising EURm -------------------------------------
-    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5033148", row_id=list_entry_id, value=eurRaising)
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="3005663", row_id=list_entry_id, value=eurRaising)
     if response_code == 200:
         print(f"SUCCESS: Added EURm Raising")
     else:
@@ -150,18 +147,25 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
 
     # Pitchdeck  -----------------------------------------------
-    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5040222", row_id=list_entry_id, value=pitchdeck)
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5250612", row_id=list_entry_id, value=pitchdeck)
     if response_code == 200:
         print(f"SUCCESS: Added Pitchdeck")
     else:
         print_red(f"FAILED to add the Pitchdeck")
-        
 
+    # Responsible Person  -----------------------------------------------
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="3005662", row_id=list_entry_id, value=234799453)  # Vlad Stoicescu's ID
+    if response_code == 200:
+        print(f"SUCCESS: Added Responsible Person")
+    else:
+        print_red(f"FAILED to add the Responsible Person")
+        print(response)
 
+    
     # Status  --------------------------------------------------
     status, reason_for_passing = define_status(companyHQ, companyStage, industrySector)
 
-    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5033149", row_id=list_entry_id, value=status)
+    response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4683272", row_id=list_entry_id, value=status)
     if response_code == 200:
         print(f"SUCCESS: Added Status")
     else:
@@ -169,7 +173,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
 
     if reason_for_passing is not None:
-        response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="5033174", row_id=list_entry_id, value=reason_for_passing)
+        response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4714311", row_id=list_entry_id, value=reason_for_passing)
         if response_code == 200:
             print(f"SUCCESS: Added Reason for Passing")
         else:
@@ -228,7 +232,8 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
         {"id": 7440825, "text": "Pre-Seed"},
         {"id": 6376697, "text": "Seed"},
         {"id": 7446731, "text": "Seed+"},
-        {"id": 6376698, "text": "Series A"}
+        {"id": 6376698, "text": "Series A"},
+        {"id": 20859700, "text": "Series B and later"}
     ]
 
     # Extract the valid stage names (texts)

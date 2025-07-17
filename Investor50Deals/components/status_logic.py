@@ -36,7 +36,7 @@ is_compatible_geo("Sweden")
 
 
 def is_early_stage(companyStage: str) -> bool:
-    early_stages = {"pre-seed", "seed", "pre seed"} 
+    early_stages = {"pre-seed", "seed", "pre seed", "seed+", "series a"} 
     return companyStage.lower() in early_stages 
 
 is_early_stage("Pre-Seed")

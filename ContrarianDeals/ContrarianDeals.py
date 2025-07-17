@@ -78,6 +78,7 @@ for index, row in df.iterrows():
     domain = extract_domain(row['Company website'])
     industrySector = row["Industry sector"]
     companyStage = row["Company stage"]
+    company_stage = "Series B and later" if company_stage == "Series B and Later" else company_stage
     companyHQ = row["Company HQ"]
     pitchdeck = row['Pitch Deck']
 
@@ -94,7 +95,6 @@ for index, row in df.iterrows():
         print_green(f"The company {company_name} already exists.")
 
 
-        LIST_ID = "291726"
         #### CHECK IF THE ORG ALREADY EXISTS IN THE NEEDED LIST bn
         is_in_list = check_if_in_list(org_id)
         if is_in_list == True:
