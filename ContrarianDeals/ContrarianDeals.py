@@ -19,7 +19,8 @@ load_dotenv()  # This will load the variables from your .env file
 
 AFFINITY_API_KEY = os.getenv('AFFINITY_API_KEY')
     
-
+BASE_ID = "app1IeYSmdK3FK93x"
+TABLE_ID = "tbl1PrGax7sKkYPgp"
 
 
 # Airtable Types:
@@ -43,88 +44,90 @@ AFFINITY_API_KEY = os.getenv('AFFINITY_API_KEY')
 # 7: Pitchdeck *
 
 
+def main():
+    ##### AIRTABLE PULL into df
+    df = airtable_pull(BASE_ID, TABLE_ID)
 
-
-##### AIRTABLE PULL into df
-df = airtable_pull('app1IeYSmdK3FK93x', 'tbl1PrGax7sKkYPgp')
-
-
-
-#### LOOP THROUGH THE DF
-c = 0
-for index, row in df.iterrows():
-    c+=1
-    print(f"{c}/{df.shape[0]} | {row['Company name']}")
+    if df.empty:
+        print("ContrarianDeals: no new Airtable records. Nothing to report.")
+        return 0
 
 
 
-#### CHECK IF THE ORG ALREADY EXISTS IN AFFINITY
-    name_url = replace_spaces_with_percent20(row['Company name'])
-    domain_url = extract_domain(row['Company website'])
-    url = f"https://api.affinity.co/organizations?term={name_url}+{domain_url}"
-
-    response = requests.get(url, auth=("", AFFINITY_API_KEY))
-
-    print("Status code:", response.status_code)
-    print("Response text:", response.text)
-
-    organizations = response.json().get('organizations', [])
-    print(organizations)
-
-    # Record all the important values into vars (can skip that, but I used that in dev)
-    name = row['Company name']
-    first_name = row['First name']
-    email = row['Email address']
-    domain = extract_domain(row['Company website'])
-    industrySector = row["Industry sector"]
-    companyStage = row["Company stage"]
-    companyStage = "Series B and later" if companyStage == "Series B and Later" else companyStage
-    companyHQ = row["Company HQ"]
-    pitchdeck = row.get('Pitch Deck', None)
-    if pd.isna(pitchdeck):   # empty -> None
-        pitchdeck = None
-
-
-
-
-#### IF IT DOES 
-    if organizations:
-
-        company_name = organizations[0].get('name', 'Unknown')  # Get the company name from the first result
-        org_id = organizations[0].get('id', None)  # Get the company ID from the first result
-
-        
-        print_green(f"The company {company_name} already exists.")
-
-
-        #### CHECK IF THE ORG ALREADY EXISTS IN THE NEEDED LIST bn
-        is_in_list = check_if_in_list(org_id)
-        if is_in_list == True:
-            print_green(f"The company {company_name} already exists in the Deals list. Skipping...")
-            continue
-        else:
-            print(f"The company {company_name} doesn't exist in the Deals list. Adding it now...")
-
+    #### LOOP THROUGH THE DF
+    c = 0
+    for index, row in df.iterrows():
+        c+=1
+        print(f"{c}/{df.shape[0]} | {row['Company name']}")
     
-      
-        create_person(first_name, email, org_id)
-  
-        list_entry_id = add_to_list(first_name, org_id)
+    
+    #### CHECK IF THE ORG ALREADY EXISTS IN AFFINITY
+        name_url = replace_spaces_with_percent20(row['Company name'])
+        domain_url = extract_domain(row['Company website'])
+        url = f"https://api.affinity.co/organizations?term={name_url}+{domain_url}"
+    
+        response = requests.get(url, auth=("", AFFINITY_API_KEY))
 
-        fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
-
-
-
-#### IF IT DOESN'T
-    else:
+        print("Status code:", response.status_code)
+        print("Response text:", response.text)
         
-        organisation_id = create_organisation(name, domain)
-        if not organisation_id:
-            continue
+        organizations = response.json().get('organizations', [])
+        print(organizations)
 
-        create_person(first_name, email, organisation_id)
-  
-        list_entry_id = add_to_list(name, organisation_id)
+        # Record all the important values into vars (can skip that, but I used that in dev)
+        name = row['Company name']
+        first_name = row['First name']
+        email = row['Email address']
+        domain = extract_domain(row['Company website'])
+        industrySector = row["Industry sector"]
+        companyStage = row["Company stage"]
+        companyStage = "Series B and later" if companyStage == "Series B and Later" else companyStage
+        companyHQ = row["Company HQ"]
+        pitchdeck = row.get('Pitch Deck', None)
+        if pd.isna(pitchdeck):   # empty -> None
+            pitchdeck = None
 
-        fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
-   
+        #### IF IT DOES 
+        if organizations:
+
+            company_name = organizations[0].get('name', 'Unknown')  # Get the company name from the first result
+            org_id = organizations[0].get('id', None)  # Get the company ID from the first result
+
+            
+            print_green(f"The company {company_name} already exists.")
+
+
+            #### CHECK IF THE ORG ALREADY EXISTS IN THE NEEDED LIST bn
+            is_in_list = check_if_in_list(org_id)
+            if is_in_list == True:
+                print_green(f"The company {company_name} already exists in the Deals list. Skipping...")
+                continue
+            else:
+                print(f"The company {company_name} doesn't exist in the Deals list. Adding it now...")
+
+        
+        
+            create_person(first_name, email, org_id)
+    
+            list_entry_id = add_to_list(first_name, org_id)
+
+            fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
+
+
+
+    #### IF IT DOESN'T
+        else:
+            
+            organisation_id = create_organisation(name, domain)
+            if not organisation_id:
+                continue
+
+            create_person(first_name, email, organisation_id)
+    
+            list_entry_id = add_to_list(name, organisation_id)
+
+            fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

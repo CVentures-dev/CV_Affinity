@@ -1,5 +1,8 @@
 import os
 import requests
+
+from dotenv import load_dotenv
+load_dotenv()  # This will load the variables from your .env file
 AFFINITY_API_KEY = os.environ['AFFINITY_API_KEY']
 
 
