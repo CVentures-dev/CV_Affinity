@@ -62,8 +62,8 @@ def main():
     
     
     #### CHECK IF THE ORG ALREADY EXISTS IN AFFINITY
-        name_url = replace_spaces_with_percent20(row['Company name'])
-        domain_url = extract_domain(row['Company website'])
+        name_url = replace_spaces_with_percent20(row['Company name'].strip())
+        domain_url = extract_domain(row['Company website'].strip())
         url = f"https://api.affinity.co/organizations?term={name_url}+{domain_url}"
     
         response = requests.get(url, auth=("", AFFINITY_API_KEY))
@@ -78,7 +78,7 @@ def main():
         name = row['Company name']
         first_name = row['First name']
         email = row['Email address']
-        domain = extract_domain(row['Company website'])
+        domain = domain_url
         industrySector = row["Industry sector"]
         companyStage = row["Company stage"]
         companyStage = "Series B and later" if companyStage == "Series B and Later" else companyStage
