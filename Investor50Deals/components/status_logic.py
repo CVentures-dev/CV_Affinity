@@ -1,15 +1,60 @@
+import os
 import re
 import pycountry
 
+from components.email_body import generate_geo_decline, generate_sector_decline, generate_topic_decline, generate_stage_decline
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
+load_dotenv()  # This will load the variables from your .env file
 
-def define_status(companyHQ, companyStage, industrySector):
+EMAIL_ADDRESS  = "info@cventures.vc"            # sender address 
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
+print(EMAIL_PASSWORD)
+
+def define_status(companyHQ, companyStage, industrySector, investor_name, company_name):
     if not is_compatible_geo(companyHQ):
+        subject, body = generate_geo_decline(investor_name, company_name, companyHQ)
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"]    = EMAIL_ADDRESS
+        msg["To"]      = TO_ADDRESS
+        msg.set_content(body)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+
+
         return 15214638, "Out of Scope"
     
-    if not is_early_stage(companyStage):  
+    if not is_early_stage(companyStage):
+        subject, body = generate_stage_decline(investor_name, company_name)
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"]    = EMAIL_ADDRESS
+        msg["To"]      = TO_ADDRESS
+        msg.set_content(body)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+
         return 15214638, "Out of Scope"
     
     if not is_valid_industry(industrySector):
+        subject, body = generate_sector_decline(investor_name, company_name)
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"]    = EMAIL_ADDRESS
+        msg["To"]      = TO_ADDRESS
+        msg.set_content(body)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+
         return 15214638, "Out of Scope"
     
     return 20860360, None
@@ -44,7 +89,12 @@ is_early_stage("Pre-Seed")
 
 
 def is_valid_industry(industrySector):
-    if not isinstance(industrySector, list):  # Ensure it's a list
+    if not isinstance(industrySector, list):  # check if it's not a list
+        cleaned_sector = re.sub(r"[\[\]]", "", industrySector).strip()
+        cleaned_sector = cleaned_sector.replace(" and ", " & ")
+
+        if cleaned_sector == "Food & Agriculture":
+            return False
         return True  
 
     for sector in industrySector:
@@ -55,3 +105,5 @@ def is_valid_industry(industrySector):
             return False  # If at least one matches, return False
 
     return True  # If no match, return True
+
+# print(is_valid_industry("Food & Agriculture"))  # False

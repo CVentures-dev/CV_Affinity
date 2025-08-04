@@ -89,7 +89,7 @@ def main():
       
             list_entry_id = add_to_list(row['First Name'], org_id)
     
-            fill_all_fields(org_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage)
+            fill_all_fields(org_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage, first_name, name)
     
     
     
@@ -104,7 +104,7 @@ def main():
       
             list_entry_id = add_to_list(row['First Name'], organisation_id)
     
-            fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage)
+            fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage, first_name, name)
 
     return 0
 

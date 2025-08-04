@@ -9,7 +9,6 @@ from components.helper import extract_domain, print_green, print_red, replace_sp
 from components.airtable_pull import airtable_pull
 
 import sys
-import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
 
@@ -111,7 +110,7 @@ def main():
     
             list_entry_id = add_to_list(first_name, org_id)
 
-            fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
+            fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name)
 
 
 
@@ -126,7 +125,7 @@ def main():
     
             list_entry_id = add_to_list(name, organisation_id)
 
-            fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage)
+            fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name)
     return 0
 
 if __name__ == "__main__":
