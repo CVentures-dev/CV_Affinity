@@ -12,6 +12,10 @@ EMAIL_ADDRESS  = "info@cventures.vc"            # sender address
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
 
+print("→ EMAIL_ADDRESS:", EMAIL_ADDRESS)
+pw = os.getenv("EMAIL_PASSWORD")
+print("→ EMAIL_PASSWORD length:", len(pw) if pw else None)
+
 def define_status(companyHQ, companyStage, industrySector, investor_name, company_name):
     if not is_compatible_geo(companyHQ):
         subject, body = generate_geo_decline(investor_name, company_name, companyHQ)
