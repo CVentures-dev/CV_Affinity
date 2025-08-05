@@ -12,10 +12,6 @@ EMAIL_ADDRESS  = "info@cventures.vc"            # sender address
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
 
-print("→ EMAIL_ADDRESS:", EMAIL_ADDRESS)
-pw = os.getenv("EMAIL_PASSWORD")
-print("→ EMAIL_PASSWORD length:", len(pw) if pw else None)
-
 def define_status(companyHQ, companyStage, industrySector, investor_name, company_name):
     if not is_compatible_geo(companyHQ):
         subject, body = generate_geo_decline(investor_name, company_name, companyHQ)
@@ -94,15 +90,15 @@ def is_valid_industry(industrySector):
         cleaned_sector = re.sub(r"[\[\]]", "", industrySector).strip()
         cleaned_sector = cleaned_sector.replace(" and ", " & ")
         
-        if "Food" or "Agriculture" in cleaned_sector: 
+        if any(keyword in cleaned_sector for keyword in ["Food", "Agriculture"]): 
             return False
         return True
 
     for sector in industrySector:
         cleaned_sector = re.sub(r"[\[\]]", "", sector).strip()
         cleaned_sector = cleaned_sector.replace(" and ", " & ")
-        
-        if "Food" or "Agriculture" in cleaned_sector:
+
+        if any(keyword in cleaned_sector for keyword in ["Food", "Agriculture"]):
             return False  # If at least one matches, return False
 
     return True  # If no match, return True
