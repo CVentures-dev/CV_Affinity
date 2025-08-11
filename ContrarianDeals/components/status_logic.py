@@ -14,7 +14,7 @@ TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
 
 def define_status(companyHQ, companyStage, industrySector, investor_name, company_name):
     if not is_compatible_geo(companyHQ):
-        subject, body = generate_geo_decline(investor_name, company_name, companyHQ)
+        subject, body = generate_geo_decline(investor_name.strip(), company_name.strip(), companyHQ)
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
@@ -29,7 +29,7 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
         return 15214638, "Out of Scope"
     
     if not is_early_stage(companyStage):
-        subject, body = generate_stage_decline(investor_name, company_name)
+        subject, body = generate_stage_decline(investor_name.strip(), company_name.strip())
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
@@ -44,7 +44,7 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
         return 15214638, "Out of Scope"
     
     if not is_valid_industry(industrySector):
-        subject, body = generate_sector_decline(investor_name, company_name)
+        subject, body = generate_sector_decline(investor_name.strip(), company_name.strip())
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
