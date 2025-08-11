@@ -25,6 +25,7 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
+        print(f"Email sent to {TO_ADDRESS} regarding geo incompatibility: {companyHQ}")
         return 15214638, "Out of Scope"
     
     if not is_early_stage(companyStage):
@@ -39,6 +40,7 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
+        print(f"Email sent to {TO_ADDRESS} regarding stage incompatibility: {companyStage}")
         return 15214638, "Out of Scope"
     
     if not is_valid_industry(industrySector):
@@ -53,6 +55,7 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
+        print(f"Email sent to {TO_ADDRESS} regarding sector incompatibility: {industrySector}")
         return 15214638, "Out of Scope"
     
     return 20860360, None

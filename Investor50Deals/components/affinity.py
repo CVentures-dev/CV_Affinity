@@ -167,9 +167,9 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
     response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4683272", row_id=list_entry_id, value=status)
     if response_code == 200:
-        print(f"SUCCESS: Added Status")
+        print(f"SUCCESS: Added Status: {status}")
     else:
-        print_red(f"FAILED to add the Status")
+        print_red(f"FAILED to add the Status: {status}")
 
 
     if reason_for_passing is not None:

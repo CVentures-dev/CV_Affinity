@@ -176,7 +176,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, indust
 
     response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4683272", row_id=list_entry_id, value=status)
     if response_code == 200:
-        print(f"SUCCESS: Added Status")
+        print(f"SUCCESS: Added Status: {status}")
     else:
         print_red(f"FAILED to add the Status")
         print(response)
@@ -185,7 +185,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, indust
     if reason_for_passing is not None:
         response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4714311", row_id=list_entry_id, value=reason_for_passing)
         if response_code == 200:
-            print(f"SUCCESS: Added Reason for Passing")
+            print(f"SUCCESS: Added Reason for Passing: {reason_for_passing}")
         else:
             print_red(f"FAILED to add the Reason for Passing")
             print(response)
