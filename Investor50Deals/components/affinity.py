@@ -190,8 +190,8 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
     "Built environment": "3. Built Environment",
     "Energy": "1. Green Energy",  
     "Industry": "4. Industry",
-    "Carbon removal & Emissions management": "5. Carbon",
-    "Circular Economy": "6. Climate",
+    "Carbon": "5. Carbon",
+    "Climate": "6. Climate",
     "Food & Agriculture": "7. Food & Agriculture",
     "Compute": "8. Compute"
     }
