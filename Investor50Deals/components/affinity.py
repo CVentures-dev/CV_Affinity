@@ -112,7 +112,7 @@ def add_to_list(name,organisation_id):
     return list_entry_id
 
 
-def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage, investor_name, company_name):
+def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitchdeck, industrySector, companyStage, investor_name, company_name, email):
 
     # Filling in the features
     URL =f"https://api.affinity.co/field-values"
@@ -163,7 +163,7 @@ def fill_all_fields(organisation_id, list_entry_id, companyHQ, eurRaising, pitch
 
     
     # Status  --------------------------------------------------
-    status, reason_for_passing = define_status(companyHQ, companyStage, industrySector, investor_name, company_name)
+    status, reason_for_passing = define_status(companyHQ, companyStage, industrySector, investor_name, company_name, email)
 
     response_code, response = addFieldValue(URL, org_id=organisation_id, field_id="4683272", row_id=list_entry_id, value=status)
     if response_code == 200:

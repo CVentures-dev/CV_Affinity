@@ -8,24 +8,24 @@ from email.message import EmailMessage
 from dotenv import load_dotenv
 load_dotenv()  # This will load the variables from your .env file
 
-EMAIL_ADDRESS  = "info@cventures.vc"            # sender address 
+EMAIL_ADDRESS  = "dealflow@cventures.vc"            # sender address 
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
-TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
+# TO_ADDRESS     = "benjaminas@cventures.vc"      # where to send the email
 
-def define_status(companyHQ, companyStage, industrySector, investor_name, company_name):
+def define_status(companyHQ, companyStage, industrySector, investor_name, company_name, email):
     if not is_compatible_geo(companyHQ):
         subject, body = generate_geo_decline(investor_name.strip(), company_name.strip(), companyHQ)
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
-        msg["To"]      = TO_ADDRESS
+        msg["To"]      = email
         msg.set_content(body)
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
-        print(f"Email sent to {TO_ADDRESS} regarding geo incompatibility: {companyHQ}")
+        print(f"Email sent to {email} regarding geo incompatibility: {companyHQ}")
         return 15214638, "Out of Scope"
     
     if not is_early_stage(companyStage):
@@ -33,14 +33,14 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
-        msg["To"]      = TO_ADDRESS
+        msg["To"]      = email
         msg.set_content(body)
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
-        print(f"Email sent to {TO_ADDRESS} regarding stage incompatibility: {companyStage}")
+        print(f"Email sent to {email} regarding stage incompatibility: {companyStage}")
         return 15214638, "Out of Scope"
     
     if not is_valid_industry(industrySector):
@@ -48,14 +48,14 @@ def define_status(companyHQ, companyStage, industrySector, investor_name, compan
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"]    = EMAIL_ADDRESS
-        msg["To"]      = TO_ADDRESS
+        msg["To"]      = email
         msg.set_content(body)
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
-        print(f"Email sent to {TO_ADDRESS} regarding sector incompatibility: {industrySector}")
+        print(f"Email sent to {email} regarding sector incompatibility: {industrySector}")
         return 15214638, "Out of Scope"
     
     return 20860360, None

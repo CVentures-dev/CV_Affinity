@@ -110,7 +110,7 @@ def main():
     
             list_entry_id = add_to_list(first_name, org_id)
 
-            fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name)
+            fill_all_fields(org_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name, email)
 
 
 
@@ -125,7 +125,7 @@ def main():
     
             list_entry_id = add_to_list(name, organisation_id)
 
-            fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name)
+            fill_all_fields(organisation_id, list_entry_id, companyHQ, pitchdeck, industrySector, companyStage, first_name, name, email)
     return 0
 
 if __name__ == "__main__":
