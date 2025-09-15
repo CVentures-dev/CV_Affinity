@@ -1,3 +1,4 @@
+import requests
 import re
 from urllib.parse import urlparse
 
@@ -50,3 +51,76 @@ def print_green(text):
 
 def print_red(text):
     print(f"\033[91m{text}\033[0m")
+
+def download_file_as_variable(url):
+    """
+    Downloads a file from a URL and returns its binary content.
+    Returns None if the download fails or the URL is not provided.
+    """
+    if not url:
+        print("No URL provided to download.")
+        return None
+        
+    try:
+        # Define a User-Agent header to mimic a web browser
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+        }
+
+        # Pass the headers with the request
+        response = requests.get(url, headers=headers)
+        
+        # Check if the request was successful
+        response.raise_for_status()
+        
+        print(f"File successfully downloaded from {url}")
+        
+        # Return the content of the response in bytes.
+        return response.content
+        
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred during download: {e}")
+        return None
+    
+def send_to_n8n_webhook(webhook_url, file_content, org_id):
+    """
+    Sends a file's binary content and an organization ID to an n8n webhook.
+
+    Args:
+        webhook_url (str): The URL of the n8n webhook.
+        file_content (bytes): The binary content of the file.
+        org_id (str): The organization ID.
+
+    Returns:
+        bool: True if the request was successful, False otherwise.
+    """
+    # The `files` dictionary handles the file upload.
+    # The tuple format is: (filename, file_content, content_type)
+    files = {
+        'file': ('pitchdeck.pdf', file_content, 'application/pdf')
+    }
+    
+    # The `data` dictionary handles the additional form fields.
+    data = {
+        'org_id': org_id
+    }
+    
+    print(f"Sending data to n8n webhook at {webhook_url}...")
+    
+    try:
+        response = requests.post(
+            webhook_url,
+            files=files,
+            data=data
+        )
+        response.raise_for_status()
+        
+        print("Data successfully sent to n8n webhook!")
+        # n8n webhooks often return a simple "OK" message.
+        print("n8n response:", response.text)
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred while sending data to n8n: {e}")
+        return False
+    
