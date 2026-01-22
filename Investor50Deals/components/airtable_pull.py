@@ -13,8 +13,8 @@ AIRTABLE_API_KEY = Api(os.getenv('AIRTABLE_API_KEY'))
 def airtable_pull(base_id, table_id):
     table = AIRTABLE_API_KEY.table(base_id, table_id)
 
-    # Get the formula to pick only rows that were created in the last 8 hours
-    myFormula = GTE(8, DATETIME_DIFF(NOW(), Field("fldIu763gT4BlKWT7"), "hours"))
+    # Get the formula to pick only rows that were created in the last 24 hours
+    myFormula = GTE(24, DATETIME_DIFF(NOW(), Field("fldIu763gT4BlKWT7"), "hours"))
     data = table.all(formula=myFormula)
 
     if not data:

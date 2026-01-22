@@ -11,5 +11,5 @@ if [[ -f .env && -z "${GITHUB_ACTIONS:-}" ]]; then
   set +a
 fi
 
-python -u ContrarianDeals/ContrarianDeals.py
+# python -u ContrarianDeals/ContrarianDeals.py
 python -u Investor50Deals/Investor50Deals.py

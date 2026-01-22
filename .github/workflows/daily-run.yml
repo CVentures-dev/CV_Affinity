@@ -2,7 +2,7 @@ name: Affinity DealFlow Automation Daily
 
 on:
   schedule:
-    - cron: "0 5,13,21 * * *" # every day at 5 AM, 1 PM, and 9 PM UTC
+    - cron: "0 11 * * *" # every day at 11 AM UTC
   workflow_dispatch: # optional: allows manual triggering
 
 concurrency:
@@ -31,4 +31,3 @@ jobs:
           set -euo pipefail
           docker compose up --build --exit-code-from app --abort-on-container-exit
           docker compose down -v
-          
