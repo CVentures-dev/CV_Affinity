@@ -19,7 +19,7 @@ def airtable_pull(base_id, table_id):
 
     if not data:
         # Empty result -> return empty DataFrame
-        print("No new Airtable rows in the last 8 hours.")
+        print("No new Airtable rows in the last 24 hours.")
         return pd.DataFrame()
 
    # Convert data into DataFrame
